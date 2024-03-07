@@ -52,7 +52,7 @@ function DrawerComponent({ onCanvasChange, canvasJson }) {
                 {isDrawingEnabled ? 'Disable Drawing' : 'Enable Drawing'}
             </button>
             <button onClick={clearCanvas}>Clear</button>
-            <FabricJSCanvas className="sample-canvas" onReady={onReady} />
+            <FabricJSCanvas style='{height: 300px}' className="sample-canvas" onReady={onReady} />
         </div>
     );
 }
