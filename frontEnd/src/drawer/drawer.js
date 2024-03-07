@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 
-function DrawerComponent({ onCanvasChange }) { // Accept a callback prop
+function DrawerComponent({ onCanvasChange, canvasJson }) {
     const { editor, onReady } = useFabricJSEditor();
     const [isDrawingEnabled, setIsDrawingEnabled] = useState(false);
 
@@ -23,6 +23,12 @@ function DrawerComponent({ onCanvasChange }) { // Accept a callback prop
             }
         };
     }, [editor?.canvas, onCanvasChange]);
+
+    useEffect(() => {
+        if (editor?.canvas && canvasJson) {
+            editor.canvas.loadFromJSON(canvasJson, editor.canvas.renderAll.bind(editor.canvas));
+        }
+    }, [canvasJson, editor?.canvas]);
 
     const toggleDrawing = () => {
         const newDrawingState = !isDrawingEnabled;
