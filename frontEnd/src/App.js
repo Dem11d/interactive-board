@@ -1,7 +1,7 @@
 import './App.css';
 import {useEffect, useState} from "react";
 import DrawerComponent from './drawer/drawer';
-import Sidebar from './sidebar/sidebar';
+import Sidebar from './sidebar/Sidebar';
 
 function App() {
   const [canvasJson, setCanvasJson] = useState(null);
@@ -30,10 +30,15 @@ function App() {
   return (
     <div className="App">
       <Sidebar></Sidebar>
+<<<<<<< HEAD
         <DrawerComponent
             onCanvasChange={console.log}
             canvasJson={canvasJson}
         />
+=======
+      <DrawerComponent onCanvasChange={console.log}></DrawerComponent>
+  
+>>>>>>> 1dc3cbc (add sidebar styles)
     </div>
   );
 }
