@@ -1,7 +1,7 @@
 const express = require('express');
-const WebSocket = require('ws');
-
 const app = express();
+const exrpessWs = require('express-ws')(app);
+
 app.use(express.json());
 const port = 3000;
 
@@ -53,14 +53,25 @@ app.post('/boards', (req, res) => {
 
 });
 
-// WebSocket server
-const wss = new WebSocket.Server({ server: app });
+app.ws('/board-sockets/:boardId', function (ws, req) {
 
-wss.on('connection', (ws) => {
-    ws.on('message', (message) => {
-        // Echo the received message back to the client
-        ws.send(message);
+    const {boardId} = req.params;
+
+    const board = boards[boardId];
+
+    if (!board) {
+        ws.send('Board not found');
+        ws.close();
+        return;
+    }
+
+    console.log(`new ws for boardId: ${boardId}`);
+
+    ws.on('message', function (msg) {
+        console.log(msg);
+        ws.send(`echo: ${msg}`);
     });
+    
 });
 
 // Start the server
