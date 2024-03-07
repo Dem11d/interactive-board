@@ -1,14 +1,16 @@
-import './App.css';
-import DrawerComponent from './drawer/drawer';
+import {useEffect, useState} from "react";
+import DrawerComponent from "./drawer/drawer";
 
 function App() {
-  return (
-    <div className="App">
-
-      <DrawerComponent onCanvasChange={console.log}></DrawerComponent>
-    
-    </div>
-  );
+    const [canvasJson, setCanvasJson] = useState(null);
+    return (
+        <div className="App">
+            <DrawerComponent
+                onCanvasChange={console.log}
+                canvasJson={canvasJson}
+            />
+        </div>
+    );
 }
 
 export default App;
