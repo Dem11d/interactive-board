@@ -37,3 +37,13 @@
     transform: rotate(360deg);
   }
 }
+
+.sample-canvas canvas{
+  width: 1000px;
+  height: 600px;
+}
+
+.sample-canvas{
+  width: 1000px;
+  height: 600px;
+}

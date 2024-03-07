@@ -89,8 +89,7 @@ app.ws('/board-sockets/:boardId', function (ws, req) {
 
     ws.on('message', function (msg) {
         console.log(msg);
-        ws.send(`echo: ${msg}`);
-
+        
         callbacks.filter(cb => cb !== callbackFunction).forEach(cb => cb(msg));
     });
 
