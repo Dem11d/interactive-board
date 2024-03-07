@@ -18,6 +18,11 @@ const boards = {
     }
 };
 
+const boardChangesCallbacks = {
+    '1': [],
+    '2': []
+};
+
 // GET endpoint
 app.get('/boards', (req, res) => {
     // Handle GET request logic here
@@ -49,8 +54,16 @@ app.post('/boards', (req, res) => {
         name: req.body.name,
         canvas: null
     };
+    boardChangesCallbacks[id] = [];
     res.send(boards[id]);
 
+});
+
+app.delete('/boards/:id', (req, res) => {
+    const {id} = req.params;
+    delete boards[id];
+    delete boardChangesCallbacks[id];
+    res.send('ok');
 });
 
 app.ws('/board-sockets/:boardId', function (ws, req) {
@@ -67,9 +80,26 @@ app.ws('/board-sockets/:boardId', function (ws, req) {
 
     console.log(`new ws for boardId: ${boardId}`);
 
+    const callbacks = boardChangesCallbacks[boardId];
+    const callbackFunction = (change) => {
+        ws.send(change);
+    };
+
+    callbacks.push(callbackFunction);
+
     ws.on('message', function (msg) {
         console.log(msg);
         ws.send(`echo: ${msg}`);
+
+        callbacks.filter(cb => cb !== callbackFunction).forEach(cb => cb(msg));
+    });
+
+    ws.on('close', function () {
+        console.log('ws closed');
+        const index = callbacks.indexOf(callbackFunction);
+        if (index !== -1) {
+            callbacks.splice(index, 1);
+        }
     });
     
 });
